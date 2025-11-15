@@ -1,5 +1,7 @@
 # Godata
 
+Builds upon previous works in https://github.com/crestonbunch/godata.
+
 # Architecture
 
 Rough idea:
@@ -126,6 +128,8 @@ Once this is done further methods will be implemented.
     - basic functionality
     - ☐ $select
     - ☐ $orderby
+        - ☐ Basic orderby using top level properties    
+        - ☒ sub orderby on collection property using $count
     - ☐ $skip
     - ☐ $top
     - ☐ $count
