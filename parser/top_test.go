@@ -14,22 +14,22 @@ func TestParse_Top(t *testing.T) {
 		error error
 	}{
 		{
-			name:  "empty",
-			in:    "",
-			error: parseErr, // TODO: to err or not to err
+			name: "empty",
+			in:   "",
+			want: nil,
 		},
 		{
-			name:  "invalid literial",
+			name:  "invalid literal",
 			in:    "$top=3.5",
-			error: parseErr,
+			error: ParseErr,
 		},
 		{
-			name:  "no literial",
+			name:  "missing literal",
 			in:    "$top=",
-			error: parseErr,
+			error: ParseErr,
 		},
 		{
-			name: "valid literial",
+			name: "valid literal",
 			in:   "$top=3",
 			want: &Node{
 				Token: Int,
@@ -55,7 +55,7 @@ func TestParse_Top(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			node, err := parsePlaceholder(test.in)
+			node, err := ParsePlaceholder(test.in)
 			assert.ErrorIs(t, err, test.error)
 			assert.Equal(t, test.want, node)
 		})

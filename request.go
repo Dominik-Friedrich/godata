@@ -2,12 +2,12 @@ package godata
 
 import "godata/parser"
 
-type ServiceRequest[T QueryRequest] struct {
+type ServiceRequest[T QueryOptions] struct {
 	Service string
 	Request T
 }
 
-type QueryRequest struct {
+type QueryOptions struct {
 	// Schemaversion Schemaversion
 	Apply *Apply
 	//Compute *Compute
@@ -46,7 +46,12 @@ type Count bool
 //
 // https://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionorderby
 type OrderBy struct {
-	Items []parser.Node
+	Items []OrderByItem
+}
+
+type OrderByItem struct {
+	Desc     bool // True: desc, False(default): asc
+	Property string
 }
 
 // The Skip system query option specifies a non-negative integer n that excludes the first n items
@@ -63,4 +68,30 @@ type Top uint
 
 type Expand struct{}
 
-type Select struct{}
+type Select struct {
+	Items []SelectItem
+}
+
+// SelectItem represents a single SelectItem in the comma separated Select list.
+type SelectItem struct {
+	SelectAll    bool
+	Property     *SelectProperty
+	QueryOptions *QueryOptions
+}
+
+type SelectProperty struct {
+	Name    string
+	Options *SelectOptions
+	Sub     *SelectProperty // for "/" selectProperty
+}
+
+type SelectOptions struct {
+	//Compute *Compute
+	Filter *Filter
+	// Search *Search
+	OrderBy *OrderBy
+	Skip    *Skip
+	Top     *Top
+	Select  *Select
+	Count   *Count
+}
